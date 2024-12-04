@@ -15,7 +15,7 @@ export class Book extends Document {
   @Prop({ required: true, unique: true })
   isbn: string;
 
-  @Prop({})
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Topic' }] })
   topics: [Types.ObjectId];
 }
 

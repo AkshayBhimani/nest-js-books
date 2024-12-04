@@ -40,7 +40,7 @@ export class BooksService {
     const [data, total] = await Promise.all([
       this.bookModel
         .find(filter)
-        .populate('topics')
+        .populate({ path: 'topics', model: 'Topic' })
         .skip(skip)
         .limit(limit)
         .exec(),
@@ -51,7 +51,10 @@ export class BooksService {
   }
 
   async findOne(id: string): Promise<Book> {
-    const book = await this.bookModel.findById(id).populate('topics').exec();
+    const book = await this.bookModel
+      .findById(id)
+      .populate({ path: 'topics', model: 'Topic' })
+      .exec();
     if (!book) {
       throw new NotFoundException(`Book id: ${id} not found.`);
     }
@@ -61,7 +64,7 @@ export class BooksService {
   async update(id: string, bookDto: UpdateBookDto): Promise<Book> {
     const updatedBook = await this.bookModel
       .findByIdAndUpdate(id, bookDto, { new: true })
-      .populate('topics')
+      .populate({ path: 'topics', model: 'Topic' })
       .exec();
 
     if (!updatedBook) {
@@ -79,6 +82,9 @@ export class BooksService {
   }
 
   async findByTopic(topicId: string): Promise<Book[]> {
-    return this.bookModel.find({ topics: topicId }).populate('topics').exec();
+    return this.bookModel
+      .find({ topics: topicId })
+      .populate({ path: 'topics', model: 'Topic' })
+      .exec();
   }
 }
