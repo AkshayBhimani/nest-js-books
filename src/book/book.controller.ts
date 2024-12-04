@@ -53,8 +53,8 @@ export class BooksController {
     @Query('topicIds') topicIds?: string,
   ) {
     {
-      const parsedLimit = typeof limit === 'string' ? parseInt(limit) : 10;
-      const parsedPage = typeof page === 'string' ? parseInt(page) : 1;
+      const parsedLimit = typeof limit === 'string' ? parseInt(limit) : limit;
+      const parsedPage = typeof page === 'string' ? parseInt(page) : page;
 
       const topicsArray = topicIds ? topicIds.split(',') : undefined;
 

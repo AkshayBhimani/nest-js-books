@@ -40,8 +40,8 @@ export class TopicsController {
     @Query('limit') limit: number = 10,
     @Query('page') page: number = 1,
   ) {
-    const parsedLimit = typeof limit === 'string' ? parseInt(limit) : 10;
-    const parsedPage = typeof page === 'string' ? parseInt(page) : 1;
+    const parsedLimit = typeof limit === 'string' ? parseInt(limit) : limit;
+    const parsedPage = typeof page === 'string' ? parseInt(page) : page;
     return this.topicsService.findAll(parsedLimit, parsedPage);
   }
 
