@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -9,15 +10,25 @@ import { Model } from 'mongoose';
 import { Book } from './book.schema';
 import { CreateBookDto } from './dto/createBook.dto';
 import { UpdateBookDto } from './dto/updateBook.dto';
+import { TopicsService } from 'src/topic/topic.service';
 
 @Injectable()
 export class BooksService {
   constructor(
     @InjectModel(Book.name) private readonly bookModel: Model<Book>,
+    private readonly topicsService: TopicsService,
   ) {}
 
   async create(bookDto: CreateBookDto): Promise<Book> {
     try {
+      for (const topicId of bookDto.topics) {
+        const topic = await this.topicsService.findOne(topicId.toString()); // Validate topic existence
+        if (!topic) {
+          throw new BadRequestException(
+            `Topic with ID ${topicId} does not exist.`,
+          );
+        }
+      }
       const newBook = new this.bookModel(bookDto);
       return await newBook.save();
     } catch (error) {

@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsArray,
   IsDateString,
+  IsMongoId,
 } from 'class-validator';
 
 export class CreateBookDto {
@@ -31,5 +32,6 @@ export class CreateBookDto {
   @IsOptional()
   @IsArray()
   @ApiProperty({ description: 'Array of topic IDs', required: false })
+  @IsMongoId({ each: true, message: 'ID must be a MongoDB ID' })
   topics?: string[];
 }

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 
 @Schema()
 export class Book extends Document {
@@ -15,7 +15,10 @@ export class Book extends Document {
   @Prop({ required: true, unique: true })
   isbn: string;
 
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Topic' }] })
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Topic' }],
+    required: false,
+  })
   topics: [Types.ObjectId];
 }
 
