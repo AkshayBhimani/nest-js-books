@@ -56,7 +56,11 @@ export class BooksController {
       const parsedLimit = typeof limit === 'string' ? parseInt(limit) : limit;
       const parsedPage = typeof page === 'string' ? parseInt(page) : page;
 
-      const topicsArray = topicIds ? topicIds.split(',') : undefined;
+      const topicsArray = topicIds
+        ? topicIds.split(',')
+        : typeof topicIds === 'string'
+          ? [topicIds]
+          : [];
 
       return this.booksService.findAll(parsedLimit, parsedPage, topicsArray);
     }
